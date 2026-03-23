@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import LoadingIcon from '../common/LoadingIcon'
 import { useRemoteMarkdown } from '../common/useRemoteMarkdown'
@@ -22,6 +23,22 @@ function UpdatesNotes() {
   })
 
   const heading = 'HMDA News and Updates'
+
+  useEffect(() => {
+    if (loading) return
+
+    // Even if loading is complete, it still takes a split second for all the posts
+    // to render so don't jump the user to the post until 300ms have passed
+    const timerId = setTimeout(() => {
+      const hash = decodeURIComponent(window.location.hash.replace(/^#/, ''))
+      if (!hash) return
+
+      const target = document.getElementById(hash)
+      if (target) target.scrollIntoView({ block: 'start' })
+    }, 300)
+
+    return () => clearTimeout(timerId)
+  }, [loading])
 
   if (loading) return <LoadingState heading={heading} />
 

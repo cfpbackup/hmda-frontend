@@ -58,6 +58,22 @@ product: tools
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 `
 
+const HASH_TARGET_SLUG =
+  '01-01-00-release-this-announcement-lives-waaaaaay-down-at-the-bottom-of-the'
+
+const HASH_DEEP_LINK_MOCK_DATA = {
+  log: [
+    ...entries,
+    {
+      date: '01/01/00',
+      type: 'release',
+      product: 'tools',
+      description:
+        'This announcement lives waaaaaay down at the bottom of the page to verify hash jumping works for permalink navigation.',
+    },
+  ],
+}
+
 onlyOn(isBeta(HOST), () => {
   describe('Change Log', function () {
     it('Does not run in Beta environments', () => {})
@@ -119,6 +135,23 @@ onlyOn(!isBeta(HOST), () => {
           .within(() => {
             cy.get('.read-more-button').should('not.exist')
           })
+      })
+    })
+
+    describe('Announcements permalink', () => {
+      it('Jumps to the correct announcement when a hash is present in the URL', () => {
+        cy.intercept('**/raw.githubusercontent.com/**/change-log-data.json', {
+          body: HASH_DEEP_LINK_MOCK_DATA,
+        })
+        cy.visit(`${HOST}/updates-notes/updates#${HASH_TARGET_SLUG}`)
+
+        cy.hash().should('eq', `#${HASH_TARGET_SLUG}`)
+        cy.window().its('scrollY').should('be.greaterThan', 200)
+
+        cy.get(`[id="${HASH_TARGET_SLUG}"]`).should('be.visible')
+        cy.get(`[id="${HASH_TARGET_SLUG}"]`)
+          .find('.column.date a')
+          .should('have.attr', 'href', `#${HASH_TARGET_SLUG}`)
       })
     })
 
