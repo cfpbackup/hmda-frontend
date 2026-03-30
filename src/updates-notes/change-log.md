@@ -39,6 +39,7 @@ type: announcement
 product: filing
 ---
 As the 2026 Home Mortgage Disclosure Act (HMDA) filing season is in full swing for 2025 data, here are some reminders and tips for preparing and uploading your submission.
+
 - **Filing Season Dates:** The 2026 filing season is now open for HMDA Data submissions. It will close for on-time submissions on Monday, March 2, 2026. You can review annual filing season information [here](https://ffiec.cfpb.gov/documentation/faq/filing-faq).
 - **Rate Spread APOR File Path Changes:** An upgrade to the HMDA Platform was performed and as a result, the [fixed](https://files.ffiec.cfpb.gov/apor/YieldTableFixed.txt), [adjustable](https://files.ffiec.cfpb.gov/apor/YieldTableAdjustable.txt), and [survey table](https://files.ffiec.cfpb.gov/apor/SurveyTable.csv) APOR file paths have changed. On Tuesday, January 20, 2026, the old APOR file paths will be removed and inaccessible and APOR files will no longer be provided via the AWS S3 public bucket. Please update your bookmarks and integrations to correspond with these changes.
 - **What’s my User Account?** If you are new to filing and do not have an account, please fill out a [registration form](https://hmdahelp.consumerfinance.gov/accounthelp/). All users logging into the HMDA platform will need to login via Login.gov, which utilizes multifactor authentication (MFA).

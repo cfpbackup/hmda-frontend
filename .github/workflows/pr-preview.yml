@@ -1,0 +1,51 @@
+name: PR Preview
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+    paths:
+      - src/updates-notes/change-log.md
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependencies and build app
+        if: github.event.action != 'closed'
+        env:
+          MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
+        run: |
+          yarn
+          yarn build
+
+      - name: Deploy PR preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./dist
+          preview-branch: gh-pages
+          action: auto
+          comment: true
