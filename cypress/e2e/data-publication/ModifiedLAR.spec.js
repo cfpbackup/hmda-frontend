@@ -2,7 +2,9 @@ import { onlyOn } from '@cypress/skip-test';
 import { isBeta, isDev } from '../../support/helpers';
 const { HOST, YEARS } = Cypress.env()
 
-const years = (YEARS && YEARS.toString().split(',')) || [2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017]
+const years = (YEARS && YEARS.toString().split(',')) || [
+  2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017,
+]
 
 const testCases = 
   years.map(year => {
