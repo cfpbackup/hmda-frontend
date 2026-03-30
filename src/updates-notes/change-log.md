@@ -5,7 +5,7 @@ product: mlar
 ---
 On March 31, 2026, the 2026 Modified Loan/Application Register (LAR) data was released. Users may download a combined file containing modified LAR records for every financial institution that has completed a HMDA data submission. The modified LAR data provides each financial institution's loan-level HMDA data, and has been modified to protect applicant and borrower privacy in accordance with the Consumer Financial Protection Bureau’s [final policy guidance](https://files.consumerfinance.gov/f/documents/HMDA_Data_Disclosure_Policy_Guidance.Executive_Summary.FINAL.12212018.pdf) on the disclosure of HMDA data.
 
-To learn more about this data, visit [the modified LAR webpage](https://ffiec.cfpb.gov/data-publication/modified-lar/2024).
+To learn more about this data, visit [the modified LAR webpage](https://ffiec.cfpb.gov/data-publication/modified-lar/2025).
 
 ---
 date: 01/20/26
