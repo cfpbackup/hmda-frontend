@@ -28,9 +28,7 @@ export const OptionCarousel = ({
 
   const [currHeight, setCurrHeight] = useState(fixedHeight || '100px')
 
-  // Temporary styling change for APOR announcement, see: GHE #5358
-  // const styles = { height: currHeight }
-  const styles = { height: 'max-content' }
+  const styles = { height: currHeight }
 
   const totalCount = options.length
   const hasMultiple = totalCount > 1

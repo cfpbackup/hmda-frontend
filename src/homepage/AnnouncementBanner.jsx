@@ -1,5 +1,4 @@
 import React from 'react'
-import AporAnnouncement from '../common/AporAnnouncement.jsx'
 import ConfiguredAlert from '../common/ConfiguredAlert'
 import { numDaysBetween } from '../filing/utils/date.js'
 import { splitYearQuarter } from '../filing/api/utils.js'
@@ -161,9 +160,6 @@ export function AnnouncementBanner({
       announcements.unshift(<ConfiguredAlert {...announcement} />)
     }
   }
-
-  // Temporarily add APOR announcement to the cycling announcements, see: GHE #5358
-  announcements.unshift(<AporAnnouncement />)
 
   // Display an auto-advancing, navigable carousel of announcements
   return (
