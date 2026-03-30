@@ -59,20 +59,16 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor i
 `
 
 const HASH_TARGET_SLUG =
-  '01-01-00-release-this-announcement-lives-waaaaaay-down-at-the-bottom-of-the'
+  '01-01-00-release-this-announcement-has-a-hash-for-deep-linking-testing-purposes'
 
-const HASH_DEEP_LINK_MOCK_DATA = {
-  log: [
-    ...entries,
-    {
-      date: '01/01/00',
-      type: 'release',
-      product: 'tools',
-      description:
-        'This announcement lives waaaaaay down at the bottom of the page to verify hash jumping works for permalink navigation.',
-    },
-  ],
-}
+const HASH_DEEP_LINK_MOCK_DATA = `
+---
+date: 01/01/00
+type: release
+product: tools
+---
+This announcement has a hash for deep linking testing purposes. It is amazing.
+`
 
 onlyOn(isBeta(HOST), () => {
   describe('Change Log', function () {
@@ -140,7 +136,7 @@ onlyOn(!isBeta(HOST), () => {
 
     describe('Announcements permalink', () => {
       it('Jumps to the correct announcement when a hash is present in the URL', () => {
-        cy.intercept('**/raw.githubusercontent.com/**/change-log-data.json', {
+        cy.intercept('**/raw.githubusercontent.com/**/change-log.md', {
           body: HASH_DEEP_LINK_MOCK_DATA,
         })
         cy.visit(`${HOST}/updates-notes/updates#${HASH_TARGET_SLUG}`)
