@@ -11,7 +11,7 @@ onlyOn(isBeta(HOST), () => {
   })
 })
 
-const years = [2024, 2023, 2022]
+const years = [2025, 2024, 2023, 2022]
 onlyOn(!isBeta(HOST), () => {
   describe('Combined MLAR', { tags: ['@localhost'] }, () => {
     years.forEach((year) => {
