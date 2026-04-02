@@ -1,0 +1,66 @@
+name: PR Preview
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+    paths:
+      - src/updates-notes/change-log.md
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependencies and build app
+        if: github.event.action != 'closed'
+        env:
+          MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
+          VITE_CHANGELOG_URL: https://raw.githubusercontent.com/${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.sha }}/src/updates-notes/change-log.md
+          VITE_USE_HASH_ROUTER: 'true'
+        run: |
+          yarn
+          yarn build --base=/hmda-frontend/pr-preview/pr-${{ github.event.number }}/
+          cp dist/index.html dist/404.html
+          touch dist/.nojekyll
+
+      - name: Deploy PR preview
+        id: preview-step
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./dist
+          preview-branch: gh-pages
+          action: auto
+          comment: false
+
+      - name: Update sticky preview comment
+        if: steps.preview-step.outputs.deployment-action == 'deploy'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: pr-preview
+          message: |
+              🎉 You can preview your content changes at ${{ steps.preview-step.outputs.preview-url }}#/updates-notes.
+
+              ⚠️ Please ignore any broken functionality you may find at the above preview of the `HMDA News and Updates` page. Its purpose is just to preview your content changes.

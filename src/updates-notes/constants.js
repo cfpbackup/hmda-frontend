@@ -16,8 +16,11 @@ export const CATEGORIES = {
   announcement: { order: 1 },
 }
 
-export const PUB_CHANGELOG_URL =
+const DEFAULT_PUB_CHANGELOG_URL =
   'https://raw.githubusercontent.com/cfpb/hmda-frontend/master/src/updates-notes/change-log.md'
+
+export const PUB_CHANGELOG_URL =
+  import.meta.env.VITE_CHANGELOG_URL || DEFAULT_PUB_CHANGELOG_URL
 
 export const DEFAULT_FILTERS = {
   type: [],

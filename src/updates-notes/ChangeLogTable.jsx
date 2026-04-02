@@ -111,7 +111,7 @@ function Row({ item, filter, products }) {
   const toggleProduct = () => filter.toggle('product', item.product)
 
   return (
-    <div className={rowClassname}>
+    <div className={rowClassname} id={item.slug}>
       <Column
         className={productClassname}
         value={products[item.product]}
@@ -126,7 +126,9 @@ function Row({ item, filter, products }) {
           <div className='text'>{item.type}</div>
         </button>
       </Column>
-      <Column className='date' value={item.changeDateOrdinal} />
+      <Column className='date'>
+        <a href={`#${item.slug}`}>{item.changeDateOrdinal}</a>
+      </Column>
       <Column className='description'>
         <ExpandableDescription
           description={item.description}
