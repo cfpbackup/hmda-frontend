@@ -133,7 +133,6 @@ function Row({ item, filter, products }) {
         <ExpandableDescription
           description={item.description}
           highlightWords={filter.filters.keywords}
-          links={item.links}
         />
       </Column>
     </div>

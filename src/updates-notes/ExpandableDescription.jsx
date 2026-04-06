@@ -7,7 +7,7 @@ import './ExpandableDescription.scss'
 // than this arbitrary-but-feels-good number of pixels
 const MAX_HEIGHT = 400
 
-function ExpandableDescription({ description, highlightWords = [], links = [] }) {
+function ExpandableDescription({ description, highlightWords = [] }) {
   const contentRef = useRef(null)
   const [isExpanded, setIsExpanded] = useState(false)
   const [needsExpansion, setNeedsExpansion] = useState(false)
@@ -17,7 +17,7 @@ function ExpandableDescription({ description, highlightWords = [], links = [] })
       const height = contentRef.current.scrollHeight
       setNeedsExpansion(height > MAX_HEIGHT)
     }
-  }, [description, links])
+  }, [description])
 
   useEffect(() => {
     if (contentRef.current) {
@@ -49,7 +49,6 @@ function ExpandableDescription({ description, highlightWords = [], links = [] })
         }
       >
         <Markdown>{description}</Markdown>
-        <Links links={links} />
       </div>
       {needsExpansion && (
         <button
@@ -62,19 +61,6 @@ function ExpandableDescription({ description, highlightWords = [], links = [] })
         </button>
       )}
     </div>
-  )
-}
-
-function Links({ links }) {
-  if (!links || !links.length) return null
-  return (
-    <ul className='links'>
-      {links.map((l, l_idx) => (
-        <li key={l_idx}>
-          <a href={l.url}>{l.text}</a>
-        </li>
-      ))}
-    </ul>
   )
 }
 

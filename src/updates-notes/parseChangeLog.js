@@ -21,7 +21,6 @@ export function parseChangeLog(changelog) {
         product: data.product,
         description: content.trim(),
       }
-      if (data.links?.length) post.links = data.links
       return post
     })
 }
