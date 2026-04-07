@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { PublicationRow } from './PublicationRow'
-import { fileExists } from '../utils/file'
-import { fetchSequenceNumber } from '../utils/api'
+import { useEffect, useState } from 'react'
 import * as AccessToken from '../../common/api/AccessToken'
+import { getDefaultConfig } from '../../common/configUtils'
+import { fetchSequenceNumber } from '../utils/api'
+import { fileExists } from '../utils/file'
+import { PublicationRow } from './PublicationRow'
 
 const defaultPubState = { fetched: false, url: null, error: null }
 
-const PublicationRows = ({ institution }) => {
+function PublicationRows({ institution }) {
+  const { fileServerDomain } = getDefaultConfig(window.location.hostname)
   const [mlar, setMlar] = useState({ ...defaultPubState })
   const [irs, setIrs] = useState({ ...defaultPubState })
   const [loading, setLoading] = useState(true)
@@ -16,11 +18,10 @@ const PublicationRows = ({ institution }) => {
   // Check if Publication files already exist in S3
   useEffect(() => {
     if (!loading) return
-    const env = !!window.location.host.match(/^ffiec/) ? 'prod' : 'dev'
-    const baseUrl = 'https://s3.amazonaws.com/cfpb-hmda-public/'
+    const env = window.location.host.match(/^ffiec/) ? 'prod' : 'dev'
 
-    const irsUrl = `${baseUrl}${env}/reports/disclosure/${activityYear}/${lei}/nationwide/IRS.csv`
-    const mlarUrl = `${baseUrl}${env}/modified-lar/${activityYear}/${lei}.txt`
+    const irsUrl = `${fileServerDomain}/reports/disclosure/${activityYear}/${lei}/nationwide/IRS.csv`
+    const mlarUrl = `${fileServerDomain}/modified-lar/${activityYear}/${lei}.txt`
 
     const targets = [
       { url: irsUrl, setter: setIrs },
@@ -37,7 +38,7 @@ const PublicationRows = ({ institution }) => {
           })),
         )
         .catch((status) => {
-          let error = status === 0 ? 'CORS Error' : 'No file'
+          const error = status === 0 ? 'CORS Error' : 'No file'
           setter((state) => ({ ...state, fetched: true, error }))
         })
     })
@@ -53,7 +54,7 @@ const PublicationRows = ({ institution }) => {
     const latestURL = `/v2/filing/institutions/${lei}/filings/${activityYear}/submissions/latest`
     const headers = {}
     const token = AccessToken.get()
-    if (token) headers['Authorization'] = `Bearer ${token}`
+    if (token) headers.Authorization = `Bearer ${token}`
     fetchSequenceNumber(latestURL, { headers }, setSeqNum)
   }, [setSeqNum, lei, activityYear])
 

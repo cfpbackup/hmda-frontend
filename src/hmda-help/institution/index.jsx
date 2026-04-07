@@ -1,35 +1,35 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import { flushSync } from 'react-dom'
 import { Link } from 'react-router-dom'
 
 import {
-  searchInputs,
-  requiredInputs,
-  otherInputs,
   notesInput,
+  otherInputs,
+  requiredInputs,
+  searchInputs,
 } from '../constants/inputs'
 import {
-  nestInstitutionStateForAPI,
   flattenApiForInstitutionState,
+  nestInstitutionStateForAPI,
 } from '../utils/convert'
 import { validateAll } from '../utils/validate'
 
-import OtherFields from './OtherFields'
-import InputText from '../InputText'
+import * as AccessToken from '../../common/api/AccessToken'
+import { getFilingYears } from '../../common/constants/configHelpers'
+import Loading from '../../common/LoadingIcon.jsx'
+import Alert from '../Alert'
 import InputRadio from '../InputRadio'
 import InputSelect from '../InputSelect'
 import InputSubmit from '../InputSubmit'
-import Alert from '../Alert'
-import Loading from '../../common/LoadingIcon.jsx'
+import InputText from '../InputText'
 import Notes from '../Notes'
 import NoteHistory from './NoteHistory'
-import { getFilingYears } from '../../common/constants/configHelpers'
-import * as AccessToken from '../../common/api/AccessToken'
+import OtherFields from './OtherFields'
 
-import './Form.css'
 import { fetchSingleInstitutionByYear } from '../search/fetchInstitution'
+import './Form.css'
 
-let defaultInstitutionState = {}
+const defaultInstitutionState = {}
 searchInputs
   .concat(requiredInputs, otherInputs)
   .forEach(
@@ -81,7 +81,7 @@ class Institution extends Component {
     // Feature: Direct linking
     // Update URL with /update/institution/:id/:year
     if (this.props.match.params.year && this.props.match.params.id && state) {
-      let splitURL = this.props.history.location.pathname.split('/')
+      const splitURL = this.props.history.location.pathname.split('/')
       // Contains lei that needs to be updated
       splitURL[3] = state.institution.lei.toUpperCase()
       // Contains year that needs to be updated
@@ -100,7 +100,7 @@ class Institution extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.error !== this.state.error) {
-      let errorMsg = document.getElementById('bottomError')
+      const errorMsg = document.getElementById('bottomError')
       errorMsg && errorMsg.scrollIntoView({ behavior: 'smooth' })
     } else if (this.state.isSubmitted) {
       const successMsg = document.querySelectorAll('.alert-success')
@@ -118,7 +118,7 @@ class Institution extends Component {
   }
 
   onInputChange(event) {
-    let additionalKeys = { isSubmitted: false, error: null }
+    const additionalKeys = { isSubmitted: false, error: null }
 
     if (this.props.location.pathname.includes('/update')) {
       // Update to Notes field required on Institution data change
@@ -143,7 +143,7 @@ class Institution extends Component {
         },
       )
     } else {
-      let value = event.target.value
+      let { value } = event.target
       if (event.target.name === 'lei') value = value.toUpperCase()
       this.setState({ [event.target.name]: value, ...additionalKeys }, () => {
         this.onInputBlur()
@@ -193,10 +193,10 @@ class Institution extends Component {
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
     const headers = { 'Content-Type': 'application/json' }
     const token = AccessToken.get()
-    if (token) headers['Authorization'] = 'Bearer ' + token
+    if (token) headers.Authorization = `Bearer ${token}`
 
     fetch('/v2/admin/institutions', {
-      method: method,
+      method,
       body: JSON.stringify(nestInstitutionStateForAPI(this.state)),
       headers,
     })
@@ -299,15 +299,25 @@ class Institution extends Component {
         }
       >
         <p>
-          You can update this institution by using the form on this page,{' '}
-          <Link to='/'>search for an institution</Link>, or{' '}
+          You can{' '}
+          <Link to={`/search/institution/${this.state.lei}`}>
+            return to the institution page
+          </Link>
+          , <Link to='/'>search for a new institution</Link>, or{' '}
           <Link to='/add'>add a new institution.</Link>
         </p>
       </Alert>
     ) : null
 
     return (
-      <React.Fragment>
+      <>
+        <Link
+          to={`/search/institution/${this.state.lei}`}
+          className='button-link'
+          style={{ marginBottom: '1em', display: 'inline-block' }}
+        >
+          &larr; Back to Institution Details
+        </Link>
         <h3>
           {pathname === '/add'
             ? 'Add an institution record'
@@ -366,9 +376,7 @@ class Institution extends Component {
                 {...searchInput}
                 value={this.state[searchInput.id] || searchInput.value}
                 disabled={
-                  pathname.includes('/update') && searchInput.id === 'lei'
-                    ? true
-                    : false
+                  !!(pathname.includes('/update') && searchInput.id === 'lei')
                 }
                 onChange={this.onInputChange}
                 onBlur={this.onInputBlur}
@@ -426,7 +434,7 @@ class Institution extends Component {
           ) : null}
         </form>
         {successAlert}
-      </React.Fragment>
+      </>
     )
   }
 }

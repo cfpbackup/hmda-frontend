@@ -1,3 +1,4 @@
+import { getDefaultConfig } from '../../common/configUtils'
 import { CURRENT_YEAR } from '../../common/constants/years'
 import { ExternalLink } from '../../common/ExternalLink'
 
@@ -6,14 +7,15 @@ const figUpdates = {
   2022: '10/20/2021',
 }
 
-export const FigLastUpdated = ({ year }) => {
+export function FigLastUpdated({ year }) {
   if (!figUpdates[year]) return null
   return (
     <span className='last-updated'>( Last updated: {figUpdates[year]})</span>
   )
 }
 
-export const HelpForFilers = () => {
+export function HelpForFilers() {
+  const { fileServerDomain } = getDefaultConfig(window.location.hostname)
   return (
     <header>
       <h3>Help for Filers</h3>
@@ -35,8 +37,8 @@ export const HelpForFilers = () => {
         <ul>
           <li>
             <a
-              href={`https://s3.amazonaws.com/cfpb-hmda-public/prod/help/${CURRENT_YEAR}-hmda-fig.pdf`}
-              download={true}
+              href={`${fileServerDomain}/documentation/${CURRENT_YEAR}-hmda-fig.pdf`}
+              download
             >
               For data collected in {CURRENT_YEAR}
               <FigLastUpdated year={CURRENT_YEAR} />
@@ -44,8 +46,8 @@ export const HelpForFilers = () => {
           </li>
           <li>
             <a
-              href='https://s3.amazonaws.com/cfpb-hmda-public/prod/help/supplemental-guide-for-quarterly-filers-for-2022.pdf'
-              download={true}
+              href={`${fileServerDomain}/documentation/supplemental-guide-for-quarterly-filers-for-2022.pdf`}
+              download
             >
               Supplemental Guide for Quarterly Filers for {CURRENT_YEAR}
             </a>
@@ -65,8 +67,8 @@ export const HelpForFilers = () => {
         </li>
         <li>
           <a
-            href='https://s3.amazonaws.com/cfpb-hmda-public/prod/help/HMDA-Loan-Scenarios.pdf'
-            download={true}
+            href={`${fileServerDomain}/documentation/HMDA-Loan-Scenarios.pdf`}
+            download
           >
             HMDA Loan Scenarios Guide
           </a>

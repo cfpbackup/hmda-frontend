@@ -125,7 +125,7 @@ class Results extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.inputValue !== this.props.inputValue) {
-      this.setState(defaultState)
+      this.setState({ showAll: false })
     }
   }
 
@@ -172,15 +172,15 @@ class Results extends React.Component {
     const mapper = this.props.makeListItem || this.makeListItem
 
     return (
-      <React.Fragment>
-        {this.props.isModLar && this.renderIncludeFileHeader()}
+      <>
+        {this.props.isModLar ? this.renderIncludeFileHeader() : null}
         {this.renderHeading(
           this.props.institutions.length,
           this.props.inputValue,
         )}
         <ul className='Results'>{visibleInstitutions.map(mapper)}</ul>
         {this.renderViewAllButton(this.props.institutions.length)}
-      </React.Fragment>
+      </>
     )
   }
 }

@@ -1,8 +1,7 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import iconSprite from '../common/uswds/img/sprite.svg'
 
-export const QuickLinks = ({ hideContent }) => {
+export function QuickLinks({ hideContent }) {
   if (hideContent) return <></>
 
   return (
@@ -11,6 +10,21 @@ export const QuickLinks = ({ hideContent }) => {
         <div className='title'>
           <span>QuickLinks</span>
         </div>
+        <Link to='/updates-notes'>
+          <svg
+            className='usa-icon'
+            aria-hidden='true'
+            focusable='false'
+            role='img'
+          >
+            <use href={`${iconSprite}#campaign`} />
+          </svg>{' '}
+          <span>
+            News and
+            <br />
+            Updates
+          </span>
+        </Link>
         <Link to='/tools/rate-spread'>
           <svg
             className='usa-icon'
@@ -18,7 +32,7 @@ export const QuickLinks = ({ hideContent }) => {
             focusable='false'
             role='img'
           >
-            <use href={`${iconSprite}#attach_money`}></use>
+            <use href={`${iconSprite}#attach_money`} />
           </svg>{' '}
           <span>
             Rate Spread
@@ -33,7 +47,7 @@ export const QuickLinks = ({ hideContent }) => {
             focusable='false'
             role='img'
           >
-            <use href={`${iconSprite}#account_balance`}></use>
+            <use href={`${iconSprite}#account_balance`} />
           </svg>{' '}
           <span>
             HMDA Filing <br />
@@ -47,7 +61,7 @@ export const QuickLinks = ({ hideContent }) => {
             focusable='false'
             role='img'
           >
-            <use href={`${iconSprite}#help`}></use>
+            <use href={`${iconSprite}#help`} />
           </svg>
           <span>
             Frequently Asked
@@ -55,14 +69,14 @@ export const QuickLinks = ({ hideContent }) => {
             Questions
           </span>
         </a>
-        <a href='/documentation/fig/2024/overview'>
+        <a href='/documentation/fig/2026/overview'>
           <svg
             className='usa-icon'
             aria-hidden='true'
             focusable='false'
             role='img'
           >
-            <use href={`${iconSprite}#near_me`}></use>
+            <use href={`${iconSprite}#near_me`} />
           </svg>
           <span>
             Filing Instructions

@@ -1,18 +1,19 @@
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import ErrorWarning from '../common/ErrorWarning.jsx'
-import Institution from './Institution.jsx'
-import InstitutionsHeader from './Header.jsx'
-import sortInstitutions from '../utils/sortInstitutions.js'
-import InstitutionPeriodSelector from './InstitutionPeriodSelector'
-import Alert from '../../common/Alert.jsx'
-import { MissingInstitutionsBanner } from './MissingInstitutionsBanner'
-import { FilteredOutList } from './FilteredOutList'
-import { splitYearQuarter } from '../api/utils.js'
-import { wrapLoading } from './wrapLoading'
+import { Component } from 'react'
 import { Redirect } from 'react-router-dom'
+import Alert from '../../common/Alert.jsx'
+import SlimAlert from '../../common/SlimAlert'
+import { splitYearQuarter } from '../api/utils.js'
+import ErrorWarning from '../common/ErrorWarning.jsx'
+import sortInstitutions from '../utils/sortInstitutions.js'
+import { FilteredOutList } from './FilteredOutList'
+import InstitutionsHeader from './Header.jsx'
 import { getNextAnnualPeriod } from './helpers'
+import Institution from './Institution.jsx'
+import InstitutionPeriodSelector from './InstitutionPeriodSelector'
 import './Institutions.css'
+import { MissingInstitutionsBanner } from './MissingInstitutionsBanner'
+import { wrapLoading } from './wrapLoading'
 
 const _setSubmission = (submission, latest, filingObj) => {
   let [filingYear, filingQuarter] = splitYearQuarter(filingObj.filing.period)
@@ -86,38 +87,37 @@ const _whatToRender = ({
       ) {
         // latest submission or filings are not fetched yet
         return wrapLoading(i)
-      } else {
-        // we have good stuff
-
-        if (showingQuarterly) {
-          if (!institution.quarterlyFiler) {
-            nonQuarterlyInstitutions.push(institution)
-            return null
-          }
-          if (!institutionFilings.filing.filing.status) {
-            noFilingThisQ.push(institution)
-            return null
-          }
-        }
-
-        const filingObj = institutionFilings.filing
-        return (
-          <Institution
-            key={i}
-            filing={filingObj.filing}
-            institution={institution}
-            submission={_setSubmission(
-              submission,
-              institutionSubmission,
-              filingObj,
-            )}
-            submissions={filingObj.submissions}
-            links={institutionFilings.links}
-            submissionPages={institutionFilings.submissionPages}
-            selectedPeriod={selectedPeriod}
-          />
-        )
       }
+      // we have good stuff
+
+      if (showingQuarterly) {
+        if (!institution.quarterlyFiler) {
+          nonQuarterlyInstitutions.push(institution)
+          return null
+        }
+        if (!institutionFilings.filing.filing.status) {
+          noFilingThisQ.push(institution)
+          return null
+        }
+      }
+
+      const filingObj = institutionFilings.filing
+      return (
+        <Institution
+          key={i}
+          filing={filingObj.filing}
+          institution={institution}
+          submission={_setSubmission(
+            submission,
+            institutionSubmission,
+            filingObj,
+          )}
+          submissions={filingObj.submissions}
+          links={institutionFilings.links}
+          submissionPages={institutionFilings.submissionPages}
+          selectedPeriod={selectedPeriod}
+        />
+      )
     })
     .filter((x) => x)
 
@@ -128,7 +128,7 @@ const _whatToRender = ({
           heading={`Annual filing for ${filingYear} is not open.`}
           type='warning'
         >
-          <p></p>
+          <p />
         </Alert>
       )
 
@@ -166,24 +166,24 @@ const _whatToRender = ({
           </p>
         </Alert>
       )
-  } else {
-    if (selectedPeriod.isPassed)
-      filteredInstitutions.unshift(
-        <ForReviewOnly endDate={selectedPeriod.endDate} key='review-only' />,
-      )
-  }
+  } else if (selectedPeriod.isPassed)
+    filteredInstitutions.unshift(
+      <ForReviewOnly endDate={selectedPeriod.endDate} key='review-only' />,
+    )
 
   return filteredInstitutions
 }
 
-const ForReviewOnly = ({ endDate }) => (
-  <div className='review-only' key='review-only-notice'>
-    <h4>For Review Only</h4>
-    The following information reflects your filing status as of {endDate}
-    .<br />
-    No further modifications are possible at this time.
-  </div>
-)
+function ForReviewOnly({ endDate }) {
+  return (
+    <div className='review-only' key='review-only-notice'>
+      <h4>For Review Only</h4>
+      The following information reflects your filing status as of {endDate}
+      .<br />
+      No further modifications are possible at this time.
+    </div>
+  )
+}
 
 export default class Institutions extends Component {
   render() {
@@ -199,7 +199,7 @@ export default class Institutions extends Component {
     } = this.props
 
     const [filingYear, filingQtr] = splitYearQuarter(filingPeriod)
-    const institutions = this.props.institutions.institutions
+    const { institutions } = this.props.institutions
     let unregisteredInstitutions = []
     let leis = []
 
@@ -219,9 +219,9 @@ export default class Institutions extends Component {
       <main id='main-content' className='Institutions full-width'>
         {error ? <ErrorWarning error={error} /> : null}
         <div className='usa-width-one-whole'>
-          {filingPeriod && (
+          {filingPeriod ? (
             <InstitutionsHeader selectedPeriod={selectedPeriod} />
-          )}
+          ) : null}
 
           <InstitutionPeriodSelector
             filingPeriod={filingPeriod}
@@ -231,6 +231,11 @@ export default class Institutions extends Component {
             hasQuarterlyFilers={hasQuarterlyFilers}
             filingPeriodOptions={filingPeriodOptions}
           />
+
+          <SlimAlert emoji='📢'>
+            View the latest{' '}
+            <a href='/updates-notes'>HMDA Platform news and updates</a>
+          </SlimAlert>
 
           {_whatToRender(this.props)}
 

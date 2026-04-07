@@ -1,34 +1,36 @@
-import getOverrides from "./overrides";
+import { getDefaultConfig } from '../../common/configUtils'
+import getOverrides from './overrides'
+
+const { fileServerDomain } = getDefaultConfig(window.location.hostname)
 
 export const THREE_YEAR_DATASET = {
   2017: {
     freezeDate: 'December 31, 2020',
-    dataformat:
-      'https://s3.amazonaws.com/cfpb-hmda-public/prod/snapshot-data/2017_publicstatic_dataformat.pdf',
+    dataformat: `${fileServerDomain}/static-data/snapshot/2017/2017_publicstatic_dataformat.pdf`,
     datasets: [
       {
         label: 'Loan/Application Records (LAR)',
         dataKey: 'lar',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2017/2017_public_lar_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2017/2017_public_lar_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2017/2017_public_lar_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2017/2017_public_lar_three_year_pipe.zip`,
       },
       {
         label: 'Transmittal Sheet Records (TS)',
         dataKey: 'ts',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2017/2017_public_ts_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2017/2017_public_ts_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2017/2017_public_ts_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2017/2017_public_ts_three_year_pipe.zip`,
       },
       {
         label: 'Reporter Panel',
         dataKey: 'panel',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2017/2017_public_panel_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2017/2017_public_panel_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2017/2017_public_panel_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2017/2017_public_panel_three_year_pipe.zip`,
       },
       {
         label: 'MSA/MD Description',
         dataKey: 'msamd',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2017/2017_public_msamd_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2017/2017_public_msamd_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2017/2017_public_msamd_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2017/2017_public_msamd_three_year_pipe.zip`,
       },
     ],
   },
@@ -38,26 +40,26 @@ export const THREE_YEAR_DATASET = {
       {
         label: 'Loan/Application Records (LAR)',
         dataKey: 'lar',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2018/2018_public_lar_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2018/2018_public_lar_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2018/2018_public_lar_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2018/2018_public_lar_three_year_pipe.zip`,
       },
       {
         label: 'Transmittal Sheet Records (TS)',
         dataKey: 'ts',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2018/2018_public_ts_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2018/2018_public_ts_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2018/2018_public_ts_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2018/2018_public_ts_three_year_pipe.zip`,
       },
       {
         label: 'Reporter Panel',
         dataKey: 'panel',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2018/2018_public_panel_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2018/2018_public_panel_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2018/2018_public_panel_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2018/2018_public_panel_three_year_pipe.zip`,
       },
       {
         label: 'MSA/MD Description',
         dataKey: 'msamd',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2018/2018_public_msamd_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2018/2018_public_msamd_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2018/2018_public_msamd_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2018/2018_public_msamd_three_year_pipe.zip`,
       },
     ],
   },
@@ -67,26 +69,26 @@ export const THREE_YEAR_DATASET = {
       {
         label: 'Loan/Application Records (LAR)',
         dataKey: 'lar',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2019/2019_public_lar_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2019/2019_public_lar_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2019/2019_public_lar_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2019/2019_public_lar_three_year_pipe.zip`,
       },
       {
         label: 'Transmittal Sheet Records (TS)',
         dataKey: 'ts',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2019/2019_public_ts_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2019/2019_public_ts_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2019/2019_public_ts_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2019/2019_public_ts_three_year_pipe.zip`,
       },
       {
         label: 'Reporter Panel',
         dataKey: 'panel',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2019/2019_public_panel_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2019/2019_public_panel_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2019/2019_public_panel_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2019/2019_public_panel_three_year_pipe.zip`,
       },
       {
         label: 'MSA/MD Description',
         dataKey: 'msamd',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2019/2019_public_msamd_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2019/2019_public_msamd_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2019/2019_public_msamd_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2019/2019_public_msamd_three_year_pipe.zip`,
       },
     ],
   },
@@ -96,44 +98,47 @@ export const THREE_YEAR_DATASET = {
       {
         label: 'Loan/Application Records (LAR)',
         dataKey: 'lar',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2020/2020_public_lar_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2020/2020_public_lar_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2020/2020_public_lar_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2020/2020_public_lar_three_year_pipe.zip`,
       },
       {
         label: 'Transmittal Sheet Records (TS)',
         dataKey: 'ts',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2020/2020_public_ts_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2020/2020_public_ts_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2020/2020_public_ts_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2020/2020_public_ts_three_year_pipe.zip`,
       },
       {
         label: 'Reporter Panel',
         dataKey: 'panel',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2020/2020_public_panel_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2020/2020_public_panel_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2020/2020_public_panel_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2020/2020_public_panel_three_year_pipe.zip`,
       },
       {
         label: 'MSA/MD Description',
         dataKey: 'msamd',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2020/2020_public_msamd_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2020/2020_public_msamd_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2020/2020_public_msamd_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2020/2020_public_msamd_three_year_pipe.zip`,
       },
     ],
   },
   2021: {
     freezeDate: 'December 31, 2024',
-    specialNote: getOverrides.getReporterPanelUnavailableBanner('2021', 'Three Year Dataset'),
+    specialNote: getOverrides.getReporterPanelUnavailableBanner(
+      '2021',
+      'Three Year Dataset',
+    ),
     datasets: [
       {
         label: 'Loan/Application Records (LAR)',
         dataKey: 'lar',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2021/2021_public_lar_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2021/2021_public_lar_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2021/2021_public_lar_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2021/2021_public_lar_three_year_pipe.zip`,
       },
       {
         label: 'Transmittal Sheet Records (TS)',
         dataKey: 'ts',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2021/2021_public_ts_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2021/2021_public_ts_three_year_pipe.zip',
+        csv: `${fileServerDomain}/static-data/three-year/2021/2021_public_ts_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2021/2021_public_ts_three_year_pipe.zip`,
       },
       {
         label: 'Reporter Panel',
@@ -143,9 +148,9 @@ export const THREE_YEAR_DATASET = {
       {
         label: 'MSA/MD Description',
         dataKey: 'msamd',
-        csv: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2021/2021_public_msamd_three_year_csv.zip',
-        txt: 'https://s3.amazonaws.com/cfpb-hmda-public/prod/three-year-data/2021/2021_public_msamd_three_year_pipe.zip',
-      }
-    ]
+        csv: `${fileServerDomain}/static-data/three-year/2021/2021_public_msamd_three_year_csv.zip`,
+        txt: `${fileServerDomain}/static-data/three-year/2021/2021_public_msamd_three_year_pipe.zip`,
+      },
+    ],
   },
 }

@@ -3,7 +3,7 @@ import Alert from '../../common/Alert'
 import { HeaderDocsLink } from './Header'
 import { isBeta } from '../../common/Beta'
 
-export const HeaderOpen = ({ period, lateDate, endDate }) => {
+export function HeaderOpen({ period, lateDate, endDate }) {
   const officialOrSimulated = isBeta() ? (
     <>
       You may <span className='simulated'>simulate filing of HMDA data</span>{' '}
@@ -37,10 +37,20 @@ export const HeaderOpen = ({ period, lateDate, endDate }) => {
           {!isBeta() && (
             <>
               The{' '}
-              <a href='https://ffiec.beta.cfpb.gov/filing' target='_blank'>
+              <a
+                href='https://ffiec.beta.cfpb.gov/filing'
+                target='_blank'
+                rel='noreferrer'
+              >
                 HMDA Beta Platform
               </a>{' '}
               is available to test your HMDA data prior to official submission.
+              <br />
+              Our{' '}
+              <a href='/tools/online-lar-formatting' target='_blank'>
+                Online LAR Formatting Tool
+              </a>{' '}
+              can help you validate your file.
             </>
           )}
           <br />

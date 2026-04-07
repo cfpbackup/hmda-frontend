@@ -1,25 +1,27 @@
 import React, { useEffect } from 'react'
 
 import './Footer.css'
+import { withRouter } from 'react-router-dom'
 import logo from './images/ffiec-icon-white.svg'
 import MaintenanceMessage from '../MaintenanceMessage'
 import ReleaseVersion from './ReleaseVersion'
-import { withRouter } from 'react-router-dom'
 import { hideHeaderFooter } from './Header'
-import { MailingSignupSmall } from './MailingListSignup'
+
+// temporarily disable mailing list signup, see GHE #5417
+// import { MailingSignupSmall } from './MailingListSignup'
+
 import { isFilingHomeOrYear } from '../filing/utils/pages'
 
-const Footer = ({ config, location: { pathname } }) => {
+function Footer({ config, location: { pathname } }) {
   const [maintenance, setMaintenance] = React.useState(null)
 
   useEffect(() => {
     if (config.maintenanceMode) setMaintenance(true)
   }, [config])
 
-  let cname =
-    'Footer ' + (maintenance ? 'maintenance ' : '') + hideHeaderFooter(pathname)
+  const cname = `Footer ${maintenance ? 'maintenance ' : ''}${hideHeaderFooter(pathname)}`
 
-  let isFilingPage = isFilingHomeOrYear(location)
+  const isFilingPage = isFilingHomeOrYear(location)
 
   return (
     <>
@@ -37,9 +39,10 @@ const Footer = ({ config, location: { pathname } }) => {
           </button>
         </div>
       )}
-      <div className='mainFooter'>
+      {/* temporarily disable mailing list signup, see GHE #5417 */}
+      {/* <div className='mainFooter'>
         <MailingSignupSmall />
-      </div>
+      </div> */}
       <div className='usa-identifier'>
         <section
           className='usa-identifier__section usa-identifier__section--masthead'
@@ -66,6 +69,7 @@ const Footer = ({ config, location: { pathname } }) => {
                 <a
                   href='https://www.consumerfinance.gov/data-research/hmda/'
                   target='_blank'
+                  rel='noreferrer'
                 >
                   CFPB's HMDA
                 </a>{' '}
@@ -85,6 +89,7 @@ const Footer = ({ config, location: { pathname } }) => {
                   target='_blank'
                   href='https://www.consumerfinance.gov/about-us/'
                   className='usa-identifier__required-link usa-link'
+                  rel='noreferrer'
                 >
                   About CFPB
                 </a>
@@ -94,6 +99,7 @@ const Footer = ({ config, location: { pathname } }) => {
                   target='_blank'
                   href='https://www.consumerfinance.gov/accessibility/'
                   className='usa-identifier__required-link usa-link'
+                  rel='noreferrer'
                 >
                   Accessibility support
                 </a>
@@ -103,6 +109,7 @@ const Footer = ({ config, location: { pathname } }) => {
                   target='_blank'
                   href='https://www.consumerfinance.gov/foia-requests/'
                   className='usa-identifier__required-link usa-link'
+                  rel='noreferrer'
                 >
                   FOIA requests
                 </a>
@@ -112,6 +119,7 @@ const Footer = ({ config, location: { pathname } }) => {
                   target='_blank'
                   href='https://www.consumerfinance.gov/privacy/email-campaign-privacy-act-statement/'
                   className='usa-identifier__required-link usa-link'
+                  rel='noreferrer'
                 >
                   Privacy policy
                 </a>
@@ -121,6 +129,7 @@ const Footer = ({ config, location: { pathname } }) => {
                   target='_blank'
                   className='usa-identifier__required-link usa-link'
                   href='https://www.ffiec.gov/hmda/'
+                  rel='noreferrer'
                 >
                   FFIEC HMDA Website
                 </a>
@@ -130,6 +139,7 @@ const Footer = ({ config, location: { pathname } }) => {
                   target='_blank'
                   className='usa-identifier__required-link usa-link'
                   href='https://www.federalregister.gov/documents/2015/10/28/2015-26607/home-mortgage-disclosure-regulation-c'
+                  rel='noreferrer'
                 >
                   HMDA Final Rule
                 </a>
@@ -139,6 +149,7 @@ const Footer = ({ config, location: { pathname } }) => {
                   target='_blank'
                   className='usa-identifier__required-link usa-link'
                   href='https://www.consumerfinance.gov/policy-compliance/guidance/implementation-guidance/hmda-implementation/'
+                  rel='noreferrer'
                 >
                   Regulatory Resources
                 </a>
@@ -148,6 +159,7 @@ const Footer = ({ config, location: { pathname } }) => {
                   target='_blank'
                   className='usa-identifier__required-link usa-link'
                   href='https://www.govinfo.gov/content/pkg/PLAW-104publ13/html/PLAW-104publ13.htm'
+                  rel='noreferrer'
                 >
                   Paperwork Reduction Act
                 </a>
@@ -157,6 +169,7 @@ const Footer = ({ config, location: { pathname } }) => {
                   target='_blank'
                   className='usa-identifier__required-link usa-link'
                   href='https://www.consumerfinance.gov/privacy/website-privacy-policy/'
+                  rel='noreferrer'
                 >
                   CFPB Notice and Consent
                 </a>
@@ -166,6 +179,7 @@ const Footer = ({ config, location: { pathname } }) => {
                   target='_blank'
                   className='usa-identifier__required-link usa-link'
                   href='mailto:hmdahelp@cfpb.gov'
+                  rel='noreferrer'
                 >
                   Contact Us
                 </a>
@@ -181,7 +195,12 @@ const Footer = ({ config, location: { pathname } }) => {
             <div className='usa-identifier__usagov-description'>
               Looking for U.S. government information and services? &nbsp;
             </div>
-            <a target='_blank' href='https://www.usa.gov/' className='usa-link'>
+            <a
+              target='_blank'
+              href='https://www.usa.gov/'
+              className='usa-link'
+              rel='noreferrer'
+            >
               Visit USA.gov
             </a>
           </div>

@@ -1,7 +1,11 @@
+import { getDefaultConfig } from '../../common/configUtils'
+
 function getMsaUrl(institutionId, year) {
+  const { fileServerDomain } = getDefaultConfig(window.location.hostname)
+
   if (!year) return
   if (year === '2017')
-    return `https://s3.amazonaws.com/cfpb-hmda-public/prod/snapshot-data/2017/msaMds/${institutionId}.json`
+    return `${fileServerDomain}/static-data/snapshot/2017/msaMds/${institutionId}.json`
   return `/v2/reporting/filers/${year}/${institutionId}/msaMds`
 }
 

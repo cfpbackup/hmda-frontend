@@ -7,10 +7,10 @@ import { HeaderOpen } from './HeaderOpen'
 import { HeaderEnded } from './HeaderEnded'
 import { HeaderClosed } from './HeaderClosed'
 
-const InstitutionsHeader = ({ selectedPeriod }) => {
+function InstitutionsHeader({ selectedPeriod }) {
   if (!selectedPeriod.period || isBeta()) return null
 
-  let [filingYear, _] = splitYearQuarter(selectedPeriod.period)
+  const [filingYear, _] = splitYearQuarter(selectedPeriod.period)
   if (!filingYear) return
 
   if (selectedPeriod.isClosed && selectedPeriod.isPassed)
@@ -23,12 +23,16 @@ const InstitutionsHeader = ({ selectedPeriod }) => {
   return <HeaderBeforeOpen {...selectedPeriod} />
 }
 
-export const HeaderDocsLink = ({ period }) => {
+export function HeaderDocsLink({ period }) {
   const [filingYear, isQuarterly] = period.split('-')
 
   const text = isQuarterly
-    ? 'For more information on quarterly filing dates, visit the '
-    : 'For more information regarding filing, please visit the '
+    ? 'For more information on quarterly filing dates, visit our '
+    : 'For more information regarding filing, please visit our '
+
+  const linkText = isQuarterly
+    ? 'Documentation'
+    : 'FAQ'
 
   const url = isQuarterly
     ? `/documentation/faq/data-collection-timelines#quarterly-filing-period-dates`
@@ -38,7 +42,7 @@ export const HeaderDocsLink = ({ period }) => {
     <>
       {text}
       <a href={url} rel='noopener noreferrer' target='_blank'>
-        Documentation
+        {linkText}
       </a>{' '}
       page.
     </>

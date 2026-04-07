@@ -1,6 +1,7 @@
-const { HOST } = Cypress.env()
-import { isBeta, isDev } from '../../support/helpers'
 import { onlyOn } from '@cypress/skip-test'
+import { isBeta } from '../../support/helpers'
+
+const { HOST } = Cypress.env()
 
 onlyOn(isBeta(HOST), () => {
   describe('Disclosure Reports', function () {
@@ -10,13 +11,13 @@ onlyOn(isBeta(HOST), () => {
 
 onlyOn(!isBeta(HOST), () => {
   // extending the timeout to account for slower API calls
-  describe('Disclosure Reports', { defaultCommandTimeout: 12000 }, () => {
+  describe('Disclosure Reports', { defaultCommandTimeout: 45000 }, () => {
     it('Fetches a 2024 Applications by Tract Report', () => {
-      const institution = isDev(HOST) ? 'LIBERTYVILLE BANK & TRUST COMPANY, N.A. - 01ERPZV3DOLNXY2MLB90' : 'CYPRESS BANK, SSB - 549300I4IUWMEMGLST06';
-      const institutionName = institution.split(' - ')[0];
-      const msaMd = isDev(HOST) ? 'Chicago-Naperville-Evanston, IL - 16984' : 'Dallas-Plano-Irving, TX - 19124';
-      const msaMdCityOnly = msaMd.split(', ')[0];
-      const msaMdZipCodeFirst = msaMd.split(' - ')[1] + ' - ' + msaMd.split(' - ')[0];
+      const institution = 'CYPRESS BANK, SSB - 549300I4IUWMEMGLST06'
+      const institutionName = institution.split(' - ')[0]
+      const msaMd = 'Dallas-Plano-Irving, TX - 19124'
+      const msaMdCityOnly = msaMd.split(', ')[0]
+      const msaMdZipCodeFirst = `${msaMd.split(' - ')[1]} - ${msaMd.split(' - ')[0]}`
 
       cy.get({ HOST }).logEnv()
       cy.viewport(1680, 916)
@@ -25,6 +26,7 @@ onlyOn(!isBeta(HOST), () => {
       cy.get('#institution-name').click({ force: true })
       cy.get('#institution-name').type(institutionName)
       cy.findByText('View MSA/MDs').click({ force: true })
+      cy.findByText('No options').should('not.exist')
       cy.findByText('Select MSA/MD...').type(msaMdCityOnly)
       cy.findByText(msaMdZipCodeFirst).click({ force: true })
       cy.findByText('Select report...').type('Applications by Tract{enter}')
@@ -56,7 +58,10 @@ onlyOn(!isBeta(HOST), () => {
       cy.get('tbody > :nth-child(4) > :nth-child(2)').should('have.text', '0')
       cy.get('tbody > :nth-child(4) > :nth-child(3)').should('have.text', '0')
       cy.get('tbody > :nth-child(4) > :nth-child(4)').should('have.text', '1')
-      cy.get('tbody > :nth-child(4) > :nth-child(5)').should('have.text', '665000')
+      cy.get('tbody > :nth-child(4) > :nth-child(5)').should(
+        'have.text',
+        '665000',
+      )
       cy.get('tbody > :nth-child(4) > :nth-child(6)').should('have.text', '0')
       cy.get('tbody > :nth-child(4) > :nth-child(7)').should('have.text', '0')
       cy.get('tbody > :nth-child(4) > :nth-child(8)').should('have.text', '0')
@@ -70,11 +75,12 @@ onlyOn(!isBeta(HOST), () => {
     })
 
     it('Fetches a 2023 Applications by Tract Report', () => {
-      const institution = isDev(HOST) ? 'LIBERTYVILLE BANK & TRUST COMPANY, N.A. - 01ERPZV3DOLNXY2MLB90' : 'CYPRESS BANK, SSB - 549300I4IUWMEMGLST06';
-      const institutionName = institution.split(' - ')[0];
-      const msaMd = isDev(HOST) ? 'Chicago-Naperville-Evanston, IL - 16984' : 'Dallas-Plano-Irving, TX - 19124';
-      const msaMdCityOnly = msaMd.split(', ')[0];
-      const msaMdZipCodeFirst = msaMd.split(' - ')[1] + ' - ' + msaMd.split(' - ')[0];
+      const institution =
+        'LIBERTYVILLE BANK & TRUST COMPANY, N.A. - 01ERPZV3DOLNXY2MLB90'
+      const institutionName = institution.split(' - ')[0]
+      const msaMd = 'Chicago-Naperville-Evanston, IL - 16984'
+      const msaMdCityOnly = msaMd.split(', ')[0]
+      const msaMdZipCodeFirst = `${msaMd.split(' - ')[1]} - ${msaMd.split(' - ')[0]}`
 
       cy.get({ HOST }).logEnv()
       cy.viewport(1680, 916)
@@ -83,6 +89,7 @@ onlyOn(!isBeta(HOST), () => {
       cy.get('#institution-name').click({ force: true })
       cy.get('#institution-name').type(institutionName)
       cy.findByText('View MSA/MDs').click({ force: true })
+      cy.findByText('No options').should('not.exist')
       cy.findByText('Select MSA/MD...').type(msaMdCityOnly)
       cy.findByText(msaMdZipCodeFirst).click({ force: true })
       cy.findByText('Select report...').type('Applications by Tract{enter}')
@@ -133,9 +140,10 @@ onlyOn(!isBeta(HOST), () => {
       cy.visit(`${HOST}/data-publication/disclosure-reports/2022`)
 
       cy.get('#institution-name').click({ force: true })
-      cy.get('#institution-name').type('cypress bank, ssb')
+      cy.get('#institution-name').type('LIBERTY MORTGAGE CORPORATION')
       cy.findByText('View MSA/MDs').click({ force: true })
-      cy.findByText('Select MSA/MD...').type('Dallas{enter}')
+      cy.findByText('No options').should('not.exist')
+      cy.findByText('Select MSA/MD...').type('Anniston{enter}')
       cy.findByText('Select report...').type('Applications by Tract{enter}')
 
       /* Check Report Params */
@@ -146,13 +154,13 @@ onlyOn(!isBeta(HOST), () => {
       // Institution
       cy.get('.ProgressCards > :nth-child(2) .heading > p').should(
         'contain.text',
-        'CYPRESS BANK, SSB - 549300I4IUWMEMGLST06',
+        'LIBERTY MORTGAGE CORPORATION - 2549008SGDIASSJGSR05',
       )
 
       // MSA/MD
       cy.get('.ProgressCards > :nth-child(3) .heading > p').should(
         'contain.text',
-        'Dallas-Plano-Irving, TX - 19124',
+        'Anniston-Oxford, AL - 11500',
       )
 
       // Report Type
@@ -186,6 +194,7 @@ onlyOn(!isBeta(HOST), () => {
       cy.get('#institution-name').click({ force: true })
       cy.get('#institution-name').type('cypress bank, ssb')
       cy.findByText('View MSA/MDs').click({ force: true })
+      cy.findByText('No options').should('not.exist')
       cy.findByText('Select MSA/MD...').type('Dallas{enter}')
       cy.findByText('Select report...').type('Applications by Tract{enter}')
 
@@ -237,6 +246,7 @@ onlyOn(!isBeta(HOST), () => {
       cy.get('#institution-name').click({ force: true })
       cy.get('#institution-name').type('cypress bank, ssb')
       cy.findByText('View MSA/MDs').click({ force: true })
+      cy.findByText('No options').should('not.exist')
       cy.findByText('Select MSA/MD...').type('Dallas{enter}')
       cy.findByText('Select report...').type('Applications by Tract{enter}')
 
@@ -291,6 +301,7 @@ onlyOn(!isBeta(HOST), () => {
       cy.get('#institution-name').click({ force: true })
       cy.get('#institution-name').type('cypress bank, ssb')
       cy.findByText('View MSA/MDs').click({ force: true })
+      cy.findByText('No options').should('not.exist')
       cy.findByText('Select MSA/MD...').type('Dallas{enter}')
       cy.findByText('Select report...').type('Applications by Tract{enter}')
 
@@ -348,6 +359,7 @@ onlyOn(!isBeta(HOST), () => {
       cy.get(
         '#main-content > .SearchList > .Results > li > .button-link',
       ).click()
+      cy.findByText('No options').should('not.exist')
 
       cy.get('#react-select-2-option-2').click({ force: true })
       cy.get('#react-select-3-option-0').click({ force: true })
@@ -417,7 +429,8 @@ onlyOn(!isBeta(HOST), () => {
       // cy.get(".heading > button").click()
     })
 
-    it('Fetches a 2017 Conv Price Info Nationwide report', () => {
+    // TODO: re-enable after re-implementing through file proxy, see GHE #5336
+    it.skip('Fetches a 2017 Conv Price Info Nationwide report', () => {
       cy.get({ HOST }).logEnv()
       cy.viewport(1680, 916)
 

@@ -1,11 +1,13 @@
-import React from 'react'
 import { withAppContext } from '../../common/appContextHOC.jsx'
+import { getDefaultConfig } from '../../common/configUtils'
 import useToolAnnouncement from '../../common/useToolAnnouncement.jsx'
 import AppIntro from './AppIntro.jsx'
 import CSVUpload from './CSVUpload.jsx'
 import Form from './Form.jsx'
 
-const App = (props) => {
+function App(props) {
+  const { fileServerDomain } = getDefaultConfig(window.location.hostname)
+
   const toolAnnouncement = useToolAnnouncement({
     toolName: 'rate spread',
     config: props.config,
@@ -26,6 +28,27 @@ const App = (props) => {
 
       <div className='alert' style={{ marginTop: '3em' }}>
         <p>
+          <b>1/9/2026:</b> Two sets of APORs were published for the week of
+          1/5/2026. The first set was published on 1/2/2026 and was briefly
+          incorporated into the Bureau's rate spread calculator. The second set
+          was published on 1/9/2026, and APORs for fixed rate loans with terms
+          of 2, 3 to 4, 7 to 8, and 26 to 50 years were substituted for the
+          first set in the Bureau's rate spread calculator. Consistent with the
+          Bureau's prior practice in instances when APORs have been updated
+          after their initial publication, both sets of APORs are{' '}
+          <a href={`${fileServerDomain}/apor/01_09_2026_APOR_tables.csv`}>
+            available here
+          </a>
+          .
+        </p>
+        <p>
+          <b>12/23/2025:</b> In light of the federal holidays from Wednesday,
+          December 24 to Friday, December 26, the CFPB is publishing for the
+          week of 12/29/2025 the APORs for fixed rate and adjustable rate loans
+          on Tuesday, December 23, based on the APORs from the prior week. This
+          is consistent with the current APOR methodology.
+        </p>
+        <p>
           <b>7/21/2022:</b> Two sets of APORs were published for the week of
           7/11/2022 for fixed rate loans with terms of 9 to 12 years and
           adjustable rate loans with terms of 9 to 50 years. The first set was
@@ -34,7 +57,7 @@ const App = (props) => {
           incorporated into the Bureau’s rate spread calculator from 7/15/2022
           until 7/21/2022, when the first set of APORs was reincorporated. Both
           sets of APORs are{' '}
-          <a href='https://s3.amazonaws.com/cfpb-hmda-public/prod/apor/7_11_2022_APOR_tables.csv'>
+          <a href={`${fileServerDomain}/apor/7_11_2022_APOR_tables.csv`}>
             available here
           </a>
           .
@@ -75,7 +98,9 @@ const App = (props) => {
           from this page. In addition, APOR values previously published by the
           Bureau between December 28, 2017 and December 31, 2017 are available
           in{' '}
-          <a href='https://s3.amazonaws.com/cfpb-hmda-public/prod/apor/122817-123117%20APOR%20Values.csv'>
+          <a
+            href={`${fileServerDomain}/apor/122817-123117%20APOR%20Values.csv`}
+          >
             this table
           </a>
           .

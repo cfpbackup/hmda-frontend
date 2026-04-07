@@ -1,6 +1,5 @@
-import React from 'react'
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector, Provider } from 'react-redux'
+import { Provider, useDispatch, useSelector } from 'react-redux'
 import ExternalLink from './ExternalLink'
 import LoadingIcon from './LoadingIcon'
 import { humanFileSize, isBigFile } from './numberServices'
@@ -28,21 +27,39 @@ export const useS3FileHeaders = (url, shouldFetch) => {
     setCurrHeaders(null)
     if (!shouldFetch) return
 
-    fetch(url, { method: 'HEAD' }).then((response) => {
-      const hdrs = ['last-modified', 'Content-Length']
-      const [lastMod, size] = hdrs.map((h) => response.headers.get(h))
-      let changeDate
+    fetch(url, { method: 'HEAD' })
+      .then((response) => {
+        // catch errors errors served up from Akamai on 404s, return empty headers to hide file which
+        // mimics current prod behavior
+        // TODO: potentially remove after [GHE]/HMDA-Operations/hmda-devops/issues/5275 is resolved
+        if (!response.ok) {
+          dispatch(saveHeaders({ url, headers: {} }))
+          setCurrHeaders({})
+          return
+        }
+        const hdrs = ['last-modified', 'Content-Length']
+        const [lastMod, size] = hdrs.map((h) => response.headers.get(h))
+        let changeDate
 
-      if (lastMod) {
-        const newDate = new Date(lastMod)
-        newDate.setHours(newDate.getHours() - 5) // Convert GMT to ET
-        changeDate = newDate.toDateString()
-      }
+        if (lastMod) {
+          const newDate = new Date(lastMod)
+          newDate.setHours(newDate.getHours() - 5) // Convert GMT to ET
+          changeDate = newDate.toDateString()
+        }
 
-      const headers = { changeDate, size }
-      dispatch(saveHeaders({ url, headers }))
-      setCurrHeaders(headers)
-    })
+        const headers = { changeDate, size }
+        dispatch(saveHeaders({ url, headers }))
+        setCurrHeaders(headers)
+      })
+      // catch CORS errors served up from Akamai on 404s, return empty headers to hide file which
+      // mimics current prod behavior
+      // TODO: potentially remove after [GHE]/HMDA-Operations/hmda-devops/issues/5275 is resolved
+      .catch((error) => {
+        if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+          dispatch(saveHeaders({ url, headers: {} }))
+          setCurrHeaders({})
+        }
+      })
   }, [url])
 
   if (!shouldFetch) return null
@@ -59,23 +76,23 @@ export const useS3FileHeaders = (url, shouldFetch) => {
  * @param {String} label Anchor body
  * @returns Element
  */
-export const S3DocLink = ({
+export function S3DocLink({
   url,
   label,
   title,
   children,
   showLastUpdated = true,
-}) => {
+}) {
   return (
     <li key={url}>
       <ExternalLink url={url} title={title}>
         {children || label}
       </ExternalLink>
-      {showLastUpdated && (
+      {showLastUpdated ? (
         <Provider store={s3Store}>
           <LastUpdated url={url} />
         </Provider>
-      )}
+      ) : null}
     </li>
   )
 }
@@ -89,28 +106,28 @@ export const S3DocLink = ({
  * @param {String} label Anchor body
  * @returns Element
  */
-export const S3DatasetLink = ({
+export function S3DatasetLink({
   url,
   children,
   label,
   showLastUpdated,
   isDocs,
-}) => {
+}) {
   return (
     <li key={url} className='dataset'>
       <a download href={url}>
         {children || label}
       </a>
-      {showLastUpdated && (
+      {showLastUpdated ? (
         <Provider store={s3Store}>
           <LastUpdated url={url} isDocs={isDocs} />
         </Provider>
-      )}
+      ) : null}
     </li>
   )
 }
 
-const S3LargeFileWarning = ({ show = false }) => {
+function S3LargeFileWarning({ show = false }) {
   if (!show) return null
   return (
     <div className='warning'>
@@ -128,9 +145,9 @@ const S3LargeFileWarning = ({ show = false }) => {
  * @param {String} url S3 file url
  * @returns Element
  */
-const LastUpdated = ({ url, isDocs }) => {
+function LastUpdated({ url, isDocs }) {
   const headers = useS3FileHeaders(url, true)
-  let cname = ['s3-modified']
+  const cname = ['s3-modified']
   if (isDocs) cname.push('docs')
 
   if (!headers) return <LoadingIcon className='LoadingInline' />
@@ -143,9 +160,10 @@ const LastUpdated = ({ url, isDocs }) => {
   return (
     <div className={cname.join(' ')}>
       <S3LargeFileWarning show={isBigFile(readableSize)} />
-      <div>
+      {/* {TODO: Reenable size after [GHE]/HMDA-Operations/hmda-devops/issues/5275} */}
+      {/* <div>
         <span className='label'>Size:</span> {readableSize}
-      </div>
+      </div> */}
       <div>
         <span className='label'>Updated:</span> {headers.changeDate}
       </div>

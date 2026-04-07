@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { getDefaultConfig } from '../../common/configUtils'
 import LoadingIcon from '../../common/LoadingIcon.jsx'
-import { humanFileSize } from '../../common/numberServices.js'
 import { useS3FileHeaders } from '../../common/S3Integrations.jsx'
-import { useEffect } from 'react'
 
-export const CombinedMLAR = ({ year, setHasCombined, hasCombined }) => {
+export function CombinedMLAR({ year, setHasCombined, hasCombined }) {
   const [includeHeader, setIncludeHeader] = useState(false)
+  const { fileServerDomain } = getDefaultConfig(window.location.hostname)
 
-  const href = formatURL(year, includeHeader)
+  const href = formatURL(year, includeHeader, fileServerDomain)
 
   // Pre-load both file's headers to avoid UI glitch when switching
   const headers = useS3FileHeaders(href, true)
-  useS3FileHeaders(formatURL(year, true), true)
+  useS3FileHeaders(formatURL(year, true, fileServerDomain), true)
 
   // Update parent component to display/hide Combined MLAR language
   // based on the existence of the S3 files.
@@ -58,7 +58,9 @@ export const CombinedMLAR = ({ year, setHasCombined, hasCombined }) => {
       </p>
       <div className='alert alert-warning'>
         <h4 className='alert-heading'>
-          Warning: Large file - {humanFileSize(headers.size)}
+          Warning: Large file
+          {/* {TODO: Reenable size after [GHE]/HMDA-Operations/hmda-devops/issues/5275} */} 
+          {/* Warning: Large file - {humanFileSize(headers.size)} */} 
         </h4>
         Special software is required to open this file
       </div>
@@ -80,17 +82,15 @@ export const CombinedMLAR = ({ year, setHasCombined, hasCombined }) => {
   )
 }
 
-const formatURL = (year, withHeader) => {
+const formatURL = (year, withHeader, fileServerDomain) => {
   let baseFilename = `${year}_combined_mlar`
-  let href =
-    'https://s3.amazonaws.com/cfpb-hmda-public/prod/dynamic-data/combined-mlar/'
+  let href = `${fileServerDomain}/modified-lar/combined-mlar/`
   href += `${year}/` // Year sub-folder
 
   if (withHeader) {
-    href += 'header/' // Headered file Sub-folder
     baseFilename += '_header' // Headered Filename adjustment
   }
 
-  href += baseFilename + '.zip'
+  href += `${baseFilename}.zip`
   return href
 }

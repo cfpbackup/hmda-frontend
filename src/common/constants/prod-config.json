@@ -2,17 +2,39 @@
   "name": "prod",
   "announcement": [
     {
-      "heading": "2024 Data Publication Release",
-      "message": "On June 24, 2025, the 2024 national loan-level datasets, disclosure reports, and MSA/MD aggregate reports were released and can be accessed via the Data Publication page. Users can now explore 2024 HMDA data using the Data Browser's dataset filtering tool or maps. ",
+      "heading": "2025 Modified LAR Data Release",
+      "message": "On March 31, 2026, the 2025 Modified LAR was released. A combined file containing all LAR records in a single file is also available. These files can be accessed via the ",
       "type": "info",
       "link": {
-        "url": "https://ffiec.cfpb.gov/data-publication/",
-        "text": "Data Publication page."
+        "url": "https://ffiec.cfpb.gov/data-publication/modified-lar/2025",
+        "text": "Modified LAR page."
+      }
+    },
+    {
+      "heading": "Future HMDA News and Updates",
+      "message": "Due to operational constraints, the Consumer Financial Protection Bureau has discontinued its use of the GovDelivery email service on Tuesday, January 20, 2026. After that date, subscribers to the HMDA mailing list will no longer receive email notifications. To ensure you continue to have access to timely information, ",
+      "type": "warning",
+      "link": {
+        "url": "https://ffiec.cfpb.gov/updates-notes",
+        "text": "visit our HMDA News and Updates webpage."
       }
     }
   ],
+  "toolAnnouncement": [
+    {
+      "tool": "rate spread",
+      "heading": "APOR Update Notice",
+      "message": "Two sets of APORs were published for the week of 1/5/2026. The first set was published on 1/2/2026 and was briefly incorporated into the Bureau’s rate spread calculator. The second set was published on 1/9/2026, and APORs for fixed rate loans with terms of 2, 3 to 4, 7 to 8, and 26 to 50 years were substituted for the first set in the Bureau’s rate spread calculator. Consistent with the Bureau’s prior practice in instances when APORs have been updated after their initial publication, both sets of APORs are ",
+      "type": "warning",
+      "link": {
+        "url": "https://files.ffiec.cfpb.gov/apor/01_09_2026_APOR_tables.csv",
+        "text": "available here."
+      }
+    }
+  ],
+  "fileServerDomain": "https://files.ffiec.cfpb.gov",
   "publicationReleaseYear": "2024",
-  "mlarReleaseYear": "2024",
+  "mlarReleaseYear": "2025",
   "maintenanceMode": false,
   "filingAnnouncement": null,
   "ffvtAnnouncement": null,
@@ -28,6 +50,7 @@
       "2017"
     ],
     "mlar": [
+      "2025",
       "2024",
       "2023",
       "2022",

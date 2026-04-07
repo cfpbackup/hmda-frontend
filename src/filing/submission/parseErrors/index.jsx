@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
-import Loading from '../../../common/LoadingIcon.jsx'
 import PropTypes from 'prop-types'
+import { Component } from 'react'
+import Loading from '../../../common/LoadingIcon.jsx'
+import { getDefaultConfig } from '../../../common/configUtils'
+import Pagination from '../../pagination/container.jsx'
 import RefileWarningComponent from '../../refileWarning/index.jsx'
 import submissionProgressHOC from '../progressHOC.jsx'
-import Pagination from '../../pagination/container.jsx'
 
 import './ParseErrors.css'
 
@@ -11,8 +12,8 @@ const RefileWarning = submissionProgressHOC(RefileWarningComponent)
 
 export const renderTSErrors = ({ transmittalSheetErrors }) => {
   if (transmittalSheetErrors.length === 0) return null
-  let uliNeeded = false
-  let tsErrorMessages = errorResponseParser(transmittalSheetErrors, uliNeeded)
+  const uliNeeded = false
+  const tsErrorMessages = errorResponseParser(transmittalSheetErrors, uliNeeded)
 
   return (
     <table width='100%'>
@@ -39,8 +40,8 @@ export const renderTSErrors = ({ transmittalSheetErrors }) => {
 export const renderLarErrors = ({ larErrors, ...props }) => {
   if (larErrors.length === 0) return null
 
-  let uliNeeded = true
-  let larErrorMessages = errorResponseParser(larErrors, uliNeeded)
+  const uliNeeded = true
+  const larErrorMessages = errorResponseParser(larErrors, uliNeeded)
 
   const caption = (
     <caption>
@@ -77,7 +78,8 @@ class ParseErrors extends Component {
   }
 
   render() {
-    const props = this.props
+    const { props } = this
+    const { fileServerDomain } = getDefaultConfig(window.location.hostname)
 
     if (!props.fetched) return <Loading />
 
@@ -105,8 +107,8 @@ class ParseErrors extends Component {
               target='_blank'
               href={
                 filingPeriod === '2018'
-                  ? 'https://s3.amazonaws.com/cfpb-hmda-public/prod/help/2018-hmda-fig-2018-hmda-rule.pdf'
-                  : `https://s3.amazonaws.com/cfpb-hmda-public/prod/help/${filingPeriod}-hmda-fig.pdf`
+                  ? `${fileServerDomain}/documentation/2018-hmda-fig-2018-hmda-rule.pdf`
+                  : `${fileServerDomain}/documentation/${filingPeriod}-hmda-fig.pdf`
               }
             >
               Filing Instructions Guide
@@ -127,7 +129,7 @@ class ParseErrors extends Component {
 }
 
 function errorResponseParser(errorResponse, uliNeeded) {
-  let apiErrorMessages = []
+  const apiErrorMessages = []
 
   errorResponse.forEach(function (errorsFound, i) {
     if (errorsFound && errorsFound.errorMessages) {

@@ -1,10 +1,5 @@
-import {
-  withFormData,
-  isProdDefault,
-  isCI,
-  isBeta,
-} from '../../support/helpers'
 import { onlyOn } from '@cypress/skip-test'
+import { isBeta, isCI, withFormData } from '../../support/helpers'
 
 const { HOST, TEST_DELAY, ENVIRONMENT } = Cypress.env()
 
@@ -15,7 +10,7 @@ onlyOn(isBeta(HOST), () => {
 })
 
 onlyOn(!isBeta(HOST), () => {
-  describe('Rate Spread Tool', function () {
+  describe('Rate Spread Tool', { tags: ['@smoke'] }, function () {
     beforeEach(() => {
       cy.viewport(1680, 916)
       cy.visit(`${HOST}/tools/rate-spread`)
@@ -91,7 +86,7 @@ onlyOn(!isBeta(HOST), () => {
 
           // Build up the form
           const formData = new FormData()
-          formData.set('file', blob, fileName) //adding a file to the form
+          formData.set('file', blob, fileName) // adding a file to the form
 
           // Perform the request
           withFormData(method, url, formData, function (res) {

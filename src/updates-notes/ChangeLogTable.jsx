@@ -1,19 +1,19 @@
-import React, { useMemo } from 'react'
-import Highlighter from 'react-highlight-words'
-import { PRODUCT_NAMES } from './constants'
-import { FilterResetButton } from './FilterResetButton'
+import { useMemo } from 'react'
 import iconSprite from '../common/uswds/img/sprite.svg'
 import './ChangeLogTable.scss'
+import { PRODUCT_NAMES } from './constants'
+import ExpandableDescription from './ExpandableDescription'
+import { FilterResetButton } from './FilterResetButton'
 /**
  * Display Publication Change Log Entries
  * (default export)
  */
-const ChangeLogTable = ({
+function ChangeLogTable({
   data = {},
   products = PRODUCT_NAMES,
   filter,
   changeLog,
-}) => {
+}) {
   const totalEntries = useMemo(
     () =>
       Object.keys(changeLog)
@@ -35,7 +35,7 @@ const ChangeLogTable = ({
       return todaysItems.map((item, col) => {
         return (
           <Row
-            key={'clt-row-' + row + 'col-' + col}
+            key={`clt-row-${row}col-${col}`}
             item={item}
             products={products}
             filter={filter}
@@ -50,7 +50,7 @@ const ChangeLogTable = ({
 
   return (
     <div id='ChangeLogTable'>
-      <div id='ChangeLogTableTop'></div>
+      <div id='ChangeLogTableTop' />
       <ResultCount
         count={rows.length}
         total={totalEntries}
@@ -62,7 +62,7 @@ const ChangeLogTable = ({
   )
 }
 
-const ResultCount = ({ count, total, hide }) => {
+function ResultCount({ count, total, hide }) {
   if (hide) return null
 
   return (
@@ -74,7 +74,7 @@ const ResultCount = ({ count, total, hide }) => {
           focusable='false'
           role='img'
         >
-          <use href={`${iconSprite}#filters`}></use>
+          <use href={`${iconSprite}#filters`} />
         </svg>
         Filtered results
       </h3>
@@ -86,7 +86,7 @@ const ResultCount = ({ count, total, hide }) => {
   )
 }
 
-const EmptyState = ({ clear, isEmpty }) => {
+function EmptyState({ clear, isEmpty }) {
   if (!isEmpty) return null
 
   return (
@@ -100,18 +100,18 @@ const EmptyState = ({ clear, isEmpty }) => {
   )
 }
 
-const Row = ({ item, filter, products }) => {
-  let rowClassname = 'change-row split'
+function Row({ item, filter, products }) {
+  const rowClassname = 'change-row split'
 
-  let productClassname =
-    `product ${item.product}` +
-    (filter.filters['product'].indexOf(item.product) > -1 ? ' selected' : '')
+  const productClassname = `product ${item.product}${
+    filter.filters.product.indexOf(item.product) > -1 ? ' selected' : ''
+  }`
 
   const toggleType = () => filter.toggle('type', item.type)
   const toggleProduct = () => filter.toggle('product', item.product)
 
   return (
-    <div className={rowClassname}>
+    <div className={rowClassname} id={item.slug}>
       <Column
         className={productClassname}
         value={products[item.product]}
@@ -126,43 +126,30 @@ const Row = ({ item, filter, products }) => {
           <div className='text'>{item.type}</div>
         </button>
       </Column>
-      <Column className='date' value={item.changeDateOrdinal} />
+      <Column className='date'>
+        <a href={`#${item.slug}`}>{item.changeDateOrdinal}</a>
+      </Column>
       <Column className='description'>
-        <Highlighter
-          highlightClassName='highlighted'
-          searchWords={filter.filters.keywords}
-          autoEscape={true}
-          textToHighlight={item.description}
+        <ExpandableDescription
+          description={item.description}
+          highlightWords={filter.filters.keywords}
+          links={item.links}
         />
-        <Links links={item.links} />
       </Column>
     </div>
   )
 }
 
-const Links = ({ links }) => {
-  if (!links) return null
-  return (
-    <ul className='links'>
-      {links.map((l, l_idx) => (
-        <li key={l_idx}>
-          <a href={l.url}>{l.text}</a>
-        </li>
-      ))}
-    </ul>
-  )
-}
-
-const Column = ({ value, onClick = () => null, className, children }) => {
+function Column({ value, onClick = () => null, className, children }) {
   if (className.indexOf('product') > -1)
     return (
-      <button onClick={onClick} className={'column ' + className} type='button'>
+      <button onClick={onClick} className={`column ${className}`} type='button'>
         {value || children}
       </button>
     )
 
   return (
-    <div onClick={onClick} className={'column ' + className}>
+    <div onClick={onClick} className={`column ${className}`}>
       {value || children}
     </div>
   )

@@ -1,9 +1,10 @@
-import React from 'react'
 import { withAppContext } from '../../common/appContextHOC.jsx'
+import { getDefaultConfig } from '../../common/configUtils'
 import Heading from '../../common/Heading.jsx'
 import { S3DatasetLink } from '../../common/S3Integrations'
 
 const AppIntro = () => {
+  const { fileServerDomain } = getDefaultConfig(window.location.hostname)
   return [
     <Heading
       key={1}
@@ -13,7 +14,7 @@ const AppIntro = () => {
         typically those with small volumes of covered loans and applications, to
         create an electronic file that can be submitted to the HMDA Platform.'
     >
-      <React.Fragment>
+      <>
         <p>
           The HMDA Excel LAR formatting tool is a Microsoft® Excel® workbook
           created by the Bureau for HMDA filers, who do not have another means
@@ -23,16 +24,20 @@ const AppIntro = () => {
           loan/application register (LAR) using the HMDA Platform.
         </p>
         <p>
-          Follow the <a href='/documentation/tools/lar-formatting/'>Excel LAR Formatting Tool instructions</a> to format your data into a pipe delimited text file.
+          Follow the{' '}
+          <a href='/documentation/tools/lar-formatting/'>
+            Excel LAR Formatting Tool instructions
+          </a>{' '}
+          to format your data into a pipe delimited text file.
         </p>
-      </React.Fragment>
+      </>
     </Heading>,
 
     <h4 key={2}>Downloads</h4>,
 
     <ul key={3}>
       <S3DatasetLink
-        url='https://s3.amazonaws.com/cfpb-hmda-public/prod/larft/HMDA_LAR_Formatting_Tool.xlsm'
+        url={`${fileServerDomain}/larft/HMDA_LAR_Formatting_Tool.xlsm`}
         label='Excel LAR Formatting Tool for data collected in or after 2018'
         showLastUpdated
       />

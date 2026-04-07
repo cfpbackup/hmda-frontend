@@ -1,5 +1,5 @@
-import { isCI, isBeta } from '../../support/helpers'
 import { onlyOn } from '@cypress/skip-test'
+import { isBeta, isCI } from '../../support/helpers'
 const { HOST, ENVIRONMENT } = Cypress.env()
 
 let baseURLToVisit = isCI(ENVIRONMENT) ? 'http://localhost:3000' : HOST
@@ -50,7 +50,7 @@ onlyOn(!isBeta(HOST), () => {
       )
     })
 
-    it('Institution level data is correct for 2021-2023', () => {
+    it('Institution level data is correct for 2022-2024', () => {
       // Using Bank of America as the test institution
       const institutionDetails = {
         name: 'BANK OF AMERICA, NATIONAL ASSOCIATION',
@@ -59,9 +59,9 @@ onlyOn(!isBeta(HOST), () => {
       }
 
       const yearData = [
+        { year: '2024', count: '233,637' },
         { year: '2023', count: '271,974' },
         { year: '2022', count: '348,961' },
-        { year: '2021', count: '368,728' },
       ]
 
       cy.visit(`${baseURLToVisit}/data-browser/graphs/quarterly/info/filers`)
@@ -87,12 +87,12 @@ onlyOn(!isBeta(HOST), () => {
       })
     })
 
-    it('Total of Quarterly Filers counts appear for 2021-2023', () => {
+    it('Total of Quarterly Filers counts appear for 2022-2024', () => {
       // Data ordered from newest to oldest year to match table layout
       const yearData = [
-        { year: '2023', count: '4,801,852' },
-        { year: '2022', count: '6,242,438' },
-        { year: '2021', count: '10,403,604' },
+        { year: '2024', count: '5,654,134' },
+        { year: '2023', count: '5,045,979' },
+        { year: '2022', count: '6,636,512' },
       ]
 
       cy.visit(`${baseURLToVisit}/data-browser/graphs/quarterly/info/filers`)
@@ -111,12 +111,12 @@ onlyOn(!isBeta(HOST), () => {
       })
     })
 
-    it('Total of All Filers counts appear for 2021-2023', () => {
+    it('Total of All Filers counts appear for 2022-2024', () => {
       // Data ordered from newest to oldest year to match table layout
       const yearData = [
-        { year: '2023', count: '11,564,178' },
+        { year: '2024', count: '12,229,298' },
+        { year: '2023', count: '11,564,155' },
         { year: '2022', count: '16,099,307' },
-        { year: '2021', count: '26,269,980' },
       ]
 
       cy.visit(`${baseURLToVisit}/data-browser/graphs/quarterly/info/filers`)
@@ -208,7 +208,7 @@ onlyOn(!isBeta(HOST), () => {
       })
     })
 
-    it('De-select and re-select a series, UI and URL updates', () => {
+    it('De-select and re-select a series, UI and URL updates',() => {
       // let urlUpdate
       cy.visit(`${baseURLToVisit}/data-browser/graphs/quarterly`)
       // De-select 'Conventional Conforming' from series

@@ -39,9 +39,10 @@ export const getFilingYears = (config, options = defaultOpts) => {
       years.add(splitYearQuarter(adminPeriod)[0])
     )
 
-    const currentYear = new Date().getFullYear()
-    const upcomingYear = currentYear + 1
-    years.add(upcomingYear.toString())
+    const yearsStringSetAsNumbers = [...years].map(Number)
+    const mostRecentVisibleFilingYear = Math.max(...yearsStringSetAsNumbers)
+    const upcomingFilingYear = mostRecentVisibleFilingYear + 1
+    years.add(upcomingFilingYear.toString())
   }
 
   return Array.from(years)
@@ -76,9 +77,9 @@ export const sortFilingYears = (years) =>  {
 
     if (q) {
       return [parseInt(y), parseInt(q.slice(1))]
-    } else {
+    } 
       return parseInt(y)
-    }
+    
   }
 
   years.sort((a, b) => {
@@ -87,9 +88,9 @@ export const sortFilingYears = (years) =>  {
 
     if (aYear[0] === bYear[0]) {
       return aYear[1] - bYear[1]
-    } else {
+    } 
       return aYear[0] - bYear[0]
-    }
+    
   })
   return years
 }

@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react'
-import Results from './Results.jsx'
+import { useEffect, useRef, useState } from 'react'
+import { getDefaultConfig } from '../../common/configUtils'
 import LoadingIcon from '../../common/LoadingIcon.jsx'
+import Results from './Results.jsx'
 
 import './SearchList.css'
 
-let INSTITUTIONS = {}
+const INSTITUTIONS = {}
 
-const SearchList = (props) => {
+function SearchList(props) {
+  const { fileServerDomain } = getDefaultConfig(window.location.hostname)
+
   const { year } = props
   const yearRef = useRef(year)
 
@@ -20,15 +23,14 @@ const SearchList = (props) => {
     setIsLoading(true)
     const fetchURL =
       year === '2017'
-        ? 'https://s3.amazonaws.com/cfpb-hmda-public/prod/snapshot-data/2017/2017_filers.json'
+        ? `${fileServerDomain}/static-data/snapshot/2017/2017_filers.json`
         : `/v2/reporting/filers/${year}`
     fetch(fetchURL)
       .then((response) => {
         if (response.ok) {
           return response.json()
-        } else {
-          return Promise.reject('Failed to fetch')
         }
+        return Promise.reject('Failed to fetch')
       })
       .then((result) => {
         INSTITUTIONS[year] = result.institutions.map((institution) => {
@@ -62,7 +64,7 @@ const SearchList = (props) => {
   }, [year])
 
   const searchInstitutions = (value) => {
-    let filteredInstitutions = []
+    const filteredInstitutions = []
 
     if (value.length !== 0) {
       const identifier = year === '2017' ? 'institutionId' : 'lei'
@@ -104,7 +106,7 @@ const SearchList = (props) => {
   let inputLabelClass = ''
   let errorMessage = null
   let loading = null
-  let identifier = year === '2017' ? 'ID' : 'LEI'
+  const identifier = year === '2017' ? 'ID' : 'LEI'
   let label = <span>Search by Institution Name or {identifier}</span>
 
   if (error && error !== 'Not a filer') {
