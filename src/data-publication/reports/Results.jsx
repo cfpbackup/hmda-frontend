@@ -149,7 +149,7 @@ class Results extends React.Component {
           type='checkbox'
           name='inclHeader'
           id='inclHeader'
-          value={this.state.withHeader}
+          checked={this.state.withHeader}
           onChange={(e) => this.setState({ withHeader: e.target.checked })}
         />
       </p>
