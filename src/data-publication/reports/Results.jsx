@@ -125,7 +125,7 @@ class Results extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.inputValue !== this.props.inputValue) {
-      this.setState(defaultState)
+      this.setState({ showAll: false })
     }
   }
 
