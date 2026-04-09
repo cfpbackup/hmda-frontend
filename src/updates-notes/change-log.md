@@ -1,4 +1,11 @@
 ---
+date: 04/09/26
+type: update
+product: mlar
+---
+Downloadable [modified LAR files](https://ffiec.cfpb.gov/data-publication/modified-lar/2025) have been updated to use .txt instead of .csv file extensions to align with their content. Users wanting to open these files in spreadsheet editors like Excel can [refer to our documentation](https://ffiec.cfpb.gov/documentation/publications/modified-lar/resources/mlar-with-excel). Additionally, the 2017 modified LAR file names have been updated to include the RSSD ID of the institution. 
+
+---
 date: 03/31/26
 type: announcement
 product: mlar
