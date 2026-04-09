@@ -8,11 +8,6 @@ const REALLY_LONG_MOCK_DATA = `
 date: 03/01/99
 type: announcement
 product: tools
-links:
-  - text: "Cool link"
-    url: "https://consumerfinance.gov"
-  - text: "Another cool link"
-    url: "https://consumerfinance.gov"
 ---
 This is a super long announcement and it is very cool.
 
@@ -32,11 +27,6 @@ const SHORT_MOCK_DATA = `
 date: 03/01/99
 type: announcement
 product: tools
-links:
-  - text: "Cool link"
-    url: "https://consumerfinance.gov"
-  - text: "Another cool link"
-    url: "https://consumerfinance.gov"
 ---
 This is a normal length announcement and it is also very cool.
 
