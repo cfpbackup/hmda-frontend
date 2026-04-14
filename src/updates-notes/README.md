@@ -34,15 +34,23 @@ You can have multiple paragraphs of content and even include lists:
 
 3. Make sure the `date`, `type`, and `product` fields have [valid values](#fields).
 
-4. After adding your new announcement, click the **"Commit changes..."** button, then select **"Create a new branch for this commit and start a pull request"**. Enter whatever you'd like for the pull request title and description.
+4. After adding your new announcement, click the **"Commit changes..."** button and enter a short commit message, e.g. `Add MLAR .csv -> .txt explanation to news page`, and an optional description, e.g. `We changed the file extension of MLAR files from .csv to .txt and have included links to documentation on how to open .txt files in Excel.`
 
-5. After opening the pull request, GitHub will take a few minutes to build a preview of your changes and will post a comment on your PR once it's ready. Click the link in that comment to preview your changes on a temporary website.
+5. Select "Create a **new branch** for this commit and start a pull request" and click the green "Propose changes" button.
 
-6. Assign a front-end developer as a **Reviewer** on your pull request. You both can review the changes and merge when ready.
+6. You're now ready to open your pull request! Delete the unnecessary "Changes", "Testing", "Notes", etc. placeholders from the PR description and click the green "Create pull request" button.
 
-7. Merging the pull request will automatically deploy your changes to production.
+7. After opening the pull request, GitHub will take a few minutes to build a preview of your changes and will automagically post a comment on your PR once it's ready. Click the link in that comment to preview your changes on a temporary website.
 
-### Fields
+8. Assign a front-end developer as a **Reviewer** on your pull request. You both can review the changes and merge when ready.
+
+9. Merging the pull request will automatically deploy your changes to production so don't click that button until you're ready for <https://ffiec.cfpb.gov/updates-notes> to show your changes!
+
+## How do I change the content in my News and Updates pull request before I merge it?
+
+Click the "Files changed" tab at the top of your PR to see your file changes. At the top of the `change-log.md` file, click the `...` menu and "Edit file" to modify your content. When done editing, click the green "Commit changes..." button and it will add your changes to your PR.
+
+## Fields
 
 - `date`
 
