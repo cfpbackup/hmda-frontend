@@ -2,6 +2,7 @@ export const cleanHost = (host) => host.replace(/^https?:\/\//, '')
 export const isCI = (env) => env === 'CI'
 export const isProd = (host) => !!cleanHost(host).match(/^ffiec(\.beta)?\.cfpb/)
 export const isBeta = (host) => !!cleanHost(host).match(/beta/)
+export const isStaging = (host) => !!cleanHost(host).match(/staging/)
 export const isDev = (host) => !isProd(host)
 export const isDevBeta = (host) => isDev(host) && isBeta(host)
 export const isProdBeta = (host) => isProd(host) && isBeta(host)
