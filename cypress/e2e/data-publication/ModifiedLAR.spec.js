@@ -1,5 +1,5 @@
 import { onlyOn } from '@cypress/skip-test';
-import { isBeta, isDev } from '../../support/helpers';
+import { isBeta, isDev, isStaging } from '../../support/helpers';
 const { HOST, YEARS } = Cypress.env()
 
 const downloadsFolder = Cypress.config('downloadsFolder')
@@ -12,7 +12,7 @@ const years = (YEARS && YEARS.toString().split(',')) || [
 const testCases = 
   years.map(year => {
 
-    // special case for 2017 on both dev and prod
+    // special case for 2017 on both dev, staging, and prod
     if (year === 2017) {
       return {
         year,
@@ -21,8 +21,8 @@ const testCases =
       }
     }
 
-    // special case for 2018 on prod
-    if (year === 2018 && !isDev(HOST)) {
+    // special case for 2018 on prod or staging
+    if (year === 2018 && (isStaging(HOST) || !isDev(HOST))) {
       return {
         year,
         name: 'cypress bank, state savings bank',
@@ -30,13 +30,30 @@ const testCases =
       }
     }
 
-    // default case for all other years for dev and prod
-    return {
+  const getDefaultCaseInstitution = () => {
+    const prodTestInstitution = {
       year,
-      name: isDev(HOST) ? 'FRONTEND TEST BANK' : 'cypress bank, ssb',
-      institution: isDev(HOST) ? 'FRONTENDTESTBANK9999' : '549300I4IUWMEMGLST06',
+      name: 'cypress bank, ssb',
+      institution: '549300I4IUWMEMGLST06',
     }
-  })
+    const devTestInstitution = {
+      year,
+      name: 'FRONTEND TEST BANK',
+      institution: 'FRONTENDTESTBANK9999',
+    }
+
+    // explicitly set staging to have prod instead of dev data
+    if (isStaging(HOST)) return prodTestInstitution
+    if (isDev(HOST)) return devTestInstitution
+    return prodTestInstitution
+  }
+
+  return {
+    year,
+    ...getDefaultCaseInstitution(),
+  }
+})
+
 
 onlyOn(isBeta(HOST), () => {
   describe('Modified LAR', function () {
@@ -78,7 +95,7 @@ onlyOn(!isBeta(HOST), () => {
 
         // Ticking the "Include Header" option updates download link appropriately
         cy.get('#inclHeader').click()
-        cy.get('#inclHeader').check('true')
+        cy.get('#inclHeader').should('be.checked')
 
         cy.get(
           '#main-content .SearchList > .Results > li > .font-small',
