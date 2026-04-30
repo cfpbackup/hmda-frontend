@@ -1,4 +1,11 @@
 ---
+date: 04/30/26
+type: update
+product: documentation
+---
+The format of links to individual edits in our Filing Instructions Guides have changed. The new links can be found by clicking the `#` next to the edit ID in a FIG, e.g. https://ffiec.cfpb.gov/documentation/fig/2026/overview#edit-S302
+
+---
 date: 04/13/26
 type: update
 product: mlar
