@@ -1,4 +1,11 @@
 ---
+date: 04/30/26
+type: update
+product: documentation
+---
+To optimize filers' user experience workflow, we have added links between the filing application and the Filing Instructions Guides. Triggered edits now link directly to their descriptions in the FIG. The new links can be found by clicking the **#** next to the edit ID in a FIG, e.g. [https://ffiec.cfpb.gov/documentation/fig/2026/overview#edit-S302](https://ffiec.cfpb.gov/documentation/fig/2026/overview#edit-S302)
+
+---
 date: 04/13/26
 type: update
 product: mlar
