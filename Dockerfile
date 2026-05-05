@@ -9,9 +9,6 @@ RUN apk add ca-certificates --no-cache --no-check-certificate && \
     cp /etc/ssl/certs/ca-certificates.crt /usr/src/app/ca-certificates.crt
 ARG NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/zscaler-root-public.cert
 
-# updates pcre2 library to fix CVE-2025-58050 in alpine base image by updating it to at least 10.46-r0
-RUN apk update && apk upgrade pcre2>=10.46
-
 RUN --mount=type=secret,id=env_vars \
   cp /run/secrets/env_vars .env
 
@@ -37,8 +34,11 @@ RUN yarn build
 FROM nginx:alpine3.23
 COPY --from=build-stage  /usr/src/app/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
-# updates pcre2 library to fix CVE-2025-58050 in alpine base image by updating it to at least 10.46-r0
-RUN apk update && apk upgrade pcre2>=10.46
+# Temporary fix for vulnerability CVE-2026-3805 (curl, fix currently on edge only)
+# More info at: GHE #5550
+RUN echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
+    apk update && \
+    apk add --no-cache curl@edge libcurl@edge
 
 ENV NGINX_USER=svc_nginx_hmda
 RUN apk update && apk upgrade
